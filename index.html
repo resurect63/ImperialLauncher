@@ -10,9 +10,8 @@
 <meta name="description" content="امپریال لانچر؛ لانچر اختصاصی ماینکرفت">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-<link rel="icon" type="image/png" href="assets/favicon.png">
 
 <style>
 :root {
@@ -32,6 +31,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 85px;
 }
 
 body {
@@ -39,6 +39,7 @@ body {
   color: var(--white);
   font-family: Vazirmatn, Tahoma, sans-serif;
   line-height: 1.9;
+  overflow-x: hidden;
 }
 
 a {
@@ -58,13 +59,13 @@ header {
   top: 0;
   width: 100%;
   z-index: 10;
-  background: rgba(4, 17, 14, .55);
+  background: rgba(4, 17, 14, .65);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(255,255,255,.08);
 }
 
 .nav {
-  height: 78px;
+  min-height: 78px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -77,6 +78,7 @@ header {
   direction: ltr;
   font-size: 22px;
   font-weight: 900;
+  white-space: nowrap;
 }
 
 .brand svg {
@@ -100,6 +102,10 @@ header {
   color: #d3e4dc;
 }
 
+.links a {
+  transition: .2s;
+}
+
 .links a:hover {
   color: var(--mint);
 }
@@ -113,7 +119,7 @@ header {
   justify-content: center;
   text-align: center;
   position: relative;
-
+  isolation: isolate;
   background:
     linear-gradient(
       180deg,
@@ -121,13 +127,37 @@ header {
       rgba(3,14,14,.65) 60%,
       #071512 100%
     ),
-    url("./assets/Imperial_Launcher_Castle_Background.jpg")
+    url("./assets/Imperial_Launcher_Castle_Background.png")
     center / cover no-repeat;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(
+    ellipse at 50% 45%,
+    transparent 10%,
+    rgba(3,12,10,.28) 100%
+  );
 }
 
 .hero-content {
   max-width: 820px;
   padding: 140px 0 100px;
+  animation: heroEnter 1s ease both;
+}
+
+@keyframes heroEnter {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .status {
@@ -135,7 +165,7 @@ header {
   padding: 7px 19px;
   border-radius: 50px;
   border: 1px solid #ffffff20;
-  background: #061a18b8;
+  background: #061a18c9;
   color: #d6e8df;
   font-size: 14px;
 }
@@ -143,6 +173,7 @@ header {
 .status span {
   color: var(--green);
   margin-left: 7px;
+  text-shadow: 0 0 12px var(--green);
 }
 
 h1 {
@@ -154,6 +185,7 @@ h1 {
 
 .accent {
   color: var(--mint);
+  text-shadow: 0 0 25px #19c78335;
 }
 
 .subtitle {
@@ -207,7 +239,7 @@ h1 {
 
 .version {
   margin-top: 12px;
-  color: #9eb7aa;
+  color: #b1c9bd;
   font-size: 12px;
 }
 
@@ -251,12 +283,13 @@ section {
   border: 1px solid #a0ebc51c;
   background: linear-gradient(145deg,#10271f,#0a1b17);
   border-radius: 18px;
-  transition: .2s;
+  transition: .25s;
 }
 
 .feature:hover {
   transform: translateY(-5px);
   border-color: #19c78380;
+  box-shadow: 0 12px 30px #00000020;
 }
 
 .feature-icon {
@@ -324,6 +357,12 @@ section {
   background: var(--panel);
   border: 1px solid #a0ebc51c;
   border-radius: 17px;
+  transition: .2s;
+}
+
+.step:hover {
+  border-color: #19c78380;
+  transform: translateY(-4px);
 }
 
 .step-number {
@@ -376,6 +415,11 @@ details {
   border: 1px solid #a0ebc51c;
   border-radius: 13px;
   background: #0c1f19;
+  transition: .2s;
+}
+
+details[open] {
+  border-color: #19c78370;
 }
 
 summary {
@@ -401,6 +445,7 @@ footer {
 .footer-content {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: 15px;
   flex-wrap: wrap;
 }
@@ -430,10 +475,15 @@ footer {
 
   .hero {
     min-height: 730px;
+    background-position: center;
   }
 
   .section-title h2 {
     font-size: 28px;
+  }
+
+  .description {
+    font-size: 15px;
   }
 }
 
@@ -458,6 +508,28 @@ footer {
 
   section {
     padding: 65px 0;
+  }
+
+  .hero {
+    min-height: 730px;
+  }
+
+  .benefits {
+    gap: 10px 18px;
+  }
+
+  .download-box h2 {
+    font-size: 24px;
+  }
+}
+
+@media(prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
   }
 }
 </style>
@@ -517,6 +589,8 @@ footer {
 
 <main>
 
+<!-- HERO -->
+
 <section class="hero" id="home">
 
   <div class="container hero-content">
@@ -562,6 +636,8 @@ footer {
   </div>
 
 </section>
+
+<!-- FEATURES -->
 
 <section id="features">
 
@@ -617,6 +693,8 @@ footer {
 
 </section>
 
+<!-- ABOUT -->
+
 <section class="about" id="about">
 
   <div class="container about-content">
@@ -643,6 +721,8 @@ footer {
   </div>
 
 </section>
+
+<!-- GUIDE -->
 
 <section id="guide">
 
@@ -688,6 +768,8 @@ footer {
 
 </section>
 
+<!-- DOWNLOAD -->
+
 <section id="download">
 
   <div class="container">
@@ -713,6 +795,8 @@ footer {
   </div>
 
 </section>
+
+<!-- FAQ -->
 
 <section id="faq">
 
@@ -757,6 +841,8 @@ footer {
 
 </main>
 
+<!-- FOOTER -->
+
 <footer>
 
   <div class="container footer-content">
@@ -766,7 +852,7 @@ footer {
     <a class="powered"
        href="https://pkdev.ir"
        target="_blank"
-       rel="noopener">
+       rel="noopener noreferrer">
 
       Powered by <b>Resurect</b>
 
